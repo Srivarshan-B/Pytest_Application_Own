@@ -1,0 +1,96 @@
+1. Create Pytest Package
+2. Python files start with "test"
+3. function name also starts with "test"
+4. 2 ways to execute:
+      1. In the terminal - pytest
+      2. In my lap - 2nd way doesn't workout. Edit configurations where u need to set up to run directly hit the play button.
+5. pytest test_create_Test_Case.py -s -v - Get the status of the test case as well and also printed in the console as well.
+6. pytest - Executed all the function that starts with test
+7. In my lap, there is no Python Integrated tools  - You can run the single function or testcase seprately
+
+Module:
+
+1. Need to execute the same set of code in each and every test case like launching the browser
+2. setup_function and teardown_function - execute in each and every test case
+3. setup_module and teardown_module - execute only once. Start and End
+
+Fixtures and Decorators
+
+1. @pytest.fixture(scope="module")
+def setup():
+    print("Setting up the DB Connection")
+    yield
+    print("Quitting up the DB Connection")   -- code is for the referring purpose
+
+@pytest.fixture(scope="function")
+def before():
+    print("launcing the browser before the test case")
+    yield
+    print("close the browser after the test case")
+
+2. def test_login(setup, before): -- we can do this to use the fixtures. We can do it in an another ways as well.
+    assert True
+    print("Forcefully pass the testcase")
+
+3. @pytest.mark.usefixtures("setup", "before") - This is the another way to pass the methods using the fixtures and markers.
+
+
+Markers
+
+1. pytest test_markers.py -s -v -k "reg" - By using the string, we can deselect the test cases and run the test cases that we want
+2. We can do it by using the makers concept as well. That's we are going to see in this video
+3. pytest test_markers.py -s -v -m "functional" is the command to run in the terminal.
+4. pytest.mark.functional - we can give the name anything that we wanted instead of the functional
+5. we will get the warning summary like this:
+test_markers.py:3
+  C:\Users\dsam3\Pytest\pytest_learning\test_markers.py:3: PytestUnknownMarkWarning: Unknown pytest.mark.functinal - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functinal
+ 6. we need to register it in the ".ini" file - [pytest]
+markers =
+        functinal
+        dinosaur
+        regression -- create this in an .ini file to ignore the warning summary
+7. we can also skip the test cases as well intentionally - @pytest.mark.skip(reason="I don't want to run")
+
+Parameterize Marker
+
+1. we can pass the n number of arguments using the markers as well
+2. it's good to create the function which return the value to the test cases
+3. import pytest
+
+def get_the_data_from_the_user():
+    return [
+        ("srivarhsna", "oifjasofon"),
+        ("dani", "ksfmlamf"),
+        ("sam", "fjasofnwoo"),
+        ("roh", "jfnlafnl"),
+        ]
+
+@pytest.mark.parametrize("username, password", get_the_data_from_the_user())
+def test_login_info(username, password):
+    print("login info")
+    print(username, "---------" ,password)
+
+Assertions, Soft Assertions and Reporting multiple failures in a test
+
+1. import pytest
+
+def test_login():
+    expected_result = 'Vazhai oru otagam nondi ottagam'
+    actual_result = 'Soothadi'
+    assert expected_result == actual_result, "Situations not matching"
+    assert "Silence" in thanthuvem, "Not Exist"
+    assert b>a, "B is Periya aal"
+
+2. 1st assertion fail bro- I'm going to validate the next assertion bro...Iru, I will call the soft assertion to kill you
+3. Install me bro - pip install pytest-soft-assertions - Not compatiable - import the pytest-check
+3. from the pytest-check le irunthu you need to import the "check" to validate all the assertions
+
+
+For Parallel execution - pip install pytest-xdist
+To generate html reports -pip install pytest-html /  pytest --html=testreports.html
+
+Allure Reports
+
+1. https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/
+2. pip install allure-pytest--- pytest webdriver_Integration.py --alluredir="./allure_reports" ---- allure serve ./allure_reports
