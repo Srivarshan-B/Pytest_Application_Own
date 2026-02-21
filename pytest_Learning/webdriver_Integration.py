@@ -10,6 +10,7 @@ import xpaths
 
 
 def get_the_data_from_the_user():
+    global driver
     return [
         ("srivarhsna@gmail.com", "oifjasofon"),
         ("dani@gmail.com", "ksfmlamf"),
